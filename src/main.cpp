@@ -7,7 +7,7 @@
 
 /////////////////////
 
-int functionNumber = 7; //this changes the functionality of the program.
+int functionNumber = 9; //this changes the functionality of the program.
 
 ////////////////////
 #define btnPin 14
@@ -154,21 +154,38 @@ void button_listener()
       flag = true;
       RESET_TIMER();
       if (interrupted == true)
-        interrupted = false;
+        {
+          interrupted = false;
+        }
     }
     break;
 
-  case 6:
+  case 6: 
     //no trigger needed in this function.
+
     break;
 
-  case 7:
+  case 7://no trigger needed in this function.
     break;
 
   case 8:
+  if(btn.wasPressed() || btn.isPressed() && flag == false)
+  {
+    Serial.println("Program 8 started.");
+    flag = true; 
+    RESET_TIMER(); 
+    digitalWrite(LED_BUILTIN, LOW); //turn on the led. 
+  }
     break;
 
   case 9:
+  if(btn.wasPressed() || btn.isPressed() && flag == false)
+  {
+    Serial.println("Program 9 started.");
+    flag = true; 
+    RESET_TIMER(); 
+    digitalWrite(LED_BUILTIN, HIGH); //turn on the led. 
+  }
     break;
   case 1000:
   {
@@ -423,9 +440,37 @@ void functionContainer()
     break;
 
   case 8:
+  if(flag == true)
+  {
+    if(ui32_counter_timer >= OP)
+    {
+      digitalWrite(LED_BUILTIN, HIGH); //turn off the led. 
+      flag = false; 
+      Serial.printf("program finished. waiting for another trigger \n");
+    }
+    if(btn.isPressed()) 
+    {
+      RESET_TIMER();  //as long as the button is pressed the timer will be reset. 
+      Serial.printf("Interrupted, reseting time \n");
+    }
+  }
     break;
 
   case 9:
+  if(flag == true)
+  {
+    if(ui32_counter_timer >= CL)
+    {
+      digitalWrite(LED_BUILTIN, LOW); //turn off the led. 
+      flag = false; 
+      Serial.printf("program finished. waiting for another trigger \n");
+    }
+    if(btn.isPressed()) 
+    {
+      RESET_TIMER();  //as long as the button is pressed the timer will be reset. 
+      Serial.printf("Interrupted, reseting time \n");
+    }
+  }  
     break;
 
   case 1000:
